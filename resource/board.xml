@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="board">
+	<typeAlias alias="BoardVo" type="com.bit2015.mysite2.vo.BoardVo" />
+	
+	<select id="list" resultClass="BoardVo">
+	
+	<![CDATA[
+		select no, view_cnt, member_name, title, to_char (reg_date, 'YYYY-MM-DD HH:MM:SS') as reg_date, member_no 
+		  from board order by my_no desc, order_no
+	]]>
+	</select>
+
+  	<insert id="insert" parameterClass="BoardVo">
+	<![CDATA[
+		insert 
+		  into board 
+		values (board_no_seq.nextval, #title#, #content#, #member_no#, #member_name#, 0, sysdate, #dap#, #my_no#, #order_no#)
+	]]>
+	</insert>
+	
+	<select id="getView" resultClass="BoardVo">
+	<![CDATA[
+		select no, view_cnt, member_no, member_name, title, content, TO_CHAR (reg_date, 'YYYY-MMDD HH:MM:SS') as reg_date
+		  from board where no=#no#
+	
+	]]>
+	
+	</select>
+	
+	<update id="updateform" parameterClass="BoardVo">
+	<![CDATA[
+		UPDATE board SET title=#title#, content=#content# WHERE no=#no#
+	]]>
+	</update>
+	
+	<delete id="delete" parameterClass="java.util.HashMap">
+	<![CDATA[
+		delete from board where no=#no# and member_no=#member_no#
+	]]>
+	</delete>
+	
+<!--	
+	<delete id="delete" parameterClass="java.util.HashMap">
+		<![CDATA[
+		delete
+		  from guestbook 
+		 where no = #no#
+		   and password = #password#
+		]]>
+	</delete>
+	 -->
+	<!--
+	<update id="update" parameterClass="UserVo">
+	<![CDATA[
+		update member 
+		   set name=#name#, password=#password#, gender=#gender# 
+		 where email=#email#
+		
+	]]>
+	</update> -->
+</sqlMap> 
